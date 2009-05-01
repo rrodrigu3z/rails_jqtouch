@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Rails JQTouch</title>
+    
+    <%= stylesheet_link_tag "jqt/jqtouch" %>
+    <%= javascript_include_tag "jquery-1.3.2", "jqtouch" %> 
+    
+    <script type="text/javascript" charset="utf-8">
+    $(document).jQTouch({
+        icon: 'jqtouch.png',
+        statusBar: 'black-translucent'
+    });
+    $.preloadImages([
+        '/stylesheets/jqt/img/chevron_white.png',
+        '/stylesheets/jqt/img/bg_row_select.gif',
+        '/stylesheets/jqt/img/back_button.png',
+        '/stylesheets/jqt/img/back_button_clicked.png',
+        '/stylesheets/jqt/img/button_clicked.png',
+        '/stylesheets/jqt/img/grayButton.png',
+        '/stylesheets/jqt/img/whiteButton.png'
+        ]);
+    </script>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>

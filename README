@@ -1,0 +1,69 @@
+rails_jqtouch
+=============
+
+A Ruby on Rails plugin to wrap some of the functionality of the jQuery plugin jQTouch, very useful
+for creating web applications for Mobile Webkit browsers (like iPhone).
+
+I created this plugin to make some examples of web applications development for the iPhone 
+(using Rails of course) at FLISOL 2009 - Punto Fijo (scheduled at May 9 in Punto Fijo, Venezuela). 
+
+jQTouch is very new and cool, and I think a Rails plugin can help to improve jQTouch and, of course,
+make the web development for mobile devices easier in Rails. Functionality still incomplete, I'm not
+a "mobile device power developer" so, comments, sugestions and improvements are welcome. Some ideas
+were taked from rails_iui by Noel Rappin.
+
+And... this is my first public released code, so... be nice!!!
+
+Addtional Info
+==============
+
+Home page of jQTouch: http://www.jqtouch.com/
+
+The URL at github: http://github.com/rrodrigu3z/rails_jqtouch/tree/master
+
+And the clone url: git://github.com/rrodrigu3z/rails_jqtouch.git
+
+Contact
+=======
+
+Feel free to contact me at rrodrigu3z at gmail.com
+
+Example
+=======
+
+After install rails_jqtouch (see clone url), you must run a rake task to copy all needed files
+to de rails project (javascripts, stylesheets, images and layouts). 
+
+rake rails_jqtouch:install
+
+There are another couple of rake tasks available:
+
+rake rails_jqtouch:jqtouch_version  # Show jQTouch version included
+rake rails_jqtouch:clean            # Delete all installed files
+
+Similiar to rails_iui, rails_jqtouch can recognize Mobile Safari Web Browsers, so, include the
+following line to any controller or ApplicationController:
+
+acts_as_iphone_controller
+
+This enable your controller to respond_to an :iphone option, and looking xxxx.iphone.erb templates.
+
+Helpers methods from Jqtouch::MobileHelper are included automatically.
+
+A simple application.iphone.erb layout is generated and copied to app/views/layouts, use this as
+an example or reference for your custom layouts.
+
+Doc
+===
+
+Documentation is included in all files, but... in Spanish!!, so if someone could translate that...
+help is welcome.
+
+My English is not very good.
+
+
+Enjoy!!
+
+ 
+
+Copyright (c) 2009 Ricardo Rodríguez, released under the MIT license

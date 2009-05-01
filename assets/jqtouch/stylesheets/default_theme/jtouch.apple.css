@@ -1,0 +1,28 @@
+a[selected], a:active {
+    background-color: #194fdb !important;
+    background-image: url(listArrowSel.png), url(selection.png) !important;
+    background-repeat: no-repeat, repeat-x;
+    background-position: right center, left top;
+    color: #FFFFFF !important;
+}
+
+a[selected="progress"] {
+    background-image: url(loading.gif), url(selection.png) !important;
+}
+
+body > .toolbar {
+    border-bottom: 1px solid #2d3642;
+    border-top: 1px solid #6d84a2;
+    background: url(toolbar.png) #6d84a2 repeat-x;
+}
+
+a[target="_replace"] {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-size: 18px;
+    color: cornflowerblue;
+    background-color: #FFFFFF;
+    background-image: none;
+}
