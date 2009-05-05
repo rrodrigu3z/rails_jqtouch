@@ -5,23 +5,8 @@
     <title>Rails JQTouch</title>
     
     <%= stylesheet_link_tag "jqt/jqtouch" %>
-    <%= javascript_include_tag "jquery-1.3.2", "jqtouch" %> 
-    
-    <script type="text/javascript" charset="utf-8">
-    $(document).jQTouch({
-        icon: 'jqtouch.png',
-        statusBar: 'black-translucent'
-    });
-    $.preloadImages([
-        '/stylesheets/jqt/img/chevron_white.png',
-        '/stylesheets/jqt/img/bg_row_select.gif',
-        '/stylesheets/jqt/img/back_button.png',
-        '/stylesheets/jqt/img/back_button_clicked.png',
-        '/stylesheets/jqt/img/button_clicked.png',
-        '/stylesheets/jqt/img/grayButton.png',
-        '/stylesheets/jqt/img/whiteButton.png'
-        ]);
-    </script>
+    <%= javascript_include_tag "jquery-1.3.2.min", "jqtouch.min" %> 
+    <%= jqtouch_init :status_bar => 'black-translucent' %>
 </head>
 <body>
   <%= yield %>
