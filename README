@@ -32,7 +32,7 @@ Example
 =======
 
 After install rails_jqtouch (see clone url), you must run a rake task to copy all needed files
-to de rails project (javascripts, stylesheets, images and layouts). 
+to the rails project (javascripts, stylesheets, images and layouts). 
 
 rake rails_jqtouch:install
 
