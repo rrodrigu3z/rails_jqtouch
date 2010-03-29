@@ -3,7 +3,7 @@ include FileUtils
 # Ruta donde se encuentran los fuentes de jqtouch y las plantillas de los layouts.
 ASSETS_PATH = File.join(File.dirname(__FILE__), '../assets')
 # Versión de jqtouch utilizada
-JQT_VERSION = "1.0.0-a2"
+JQT_VERSION = "1.0-beta-2-r109"
 
 namespace :rails_jqtouch do
   
@@ -14,16 +14,12 @@ namespace :rails_jqtouch do
   
   desc 'Copia los js de jqtouch en public/javascripts'
   task :install_javascripts => :environment do
-    Dir.chdir "#{ASSETS_PATH}/jqtouch/javascripts" do
-      Dir.glob('*.js') {|js| cp(js, "#{RAILS_ROOT}/public/javascripts")}
-    end
+    cp_r "#{ASSETS_PATH}/javascripts/jqtouch", "#{RAILS_ROOT}/public/javascripts"
   end
   
-  desc 'Copia la hoja de estilos y las imagenes del tema jqt en public/stylesheets'
-  task :install_stylesheets_jqt => :environment do
-    Dir.chdir("#{ASSETS_PATH}/jqtouch/stylesheets") do
-      cp_r "jqt", "#{RAILS_ROOT}/public/stylesheets"
-    end
+  desc 'Copia las hojas de estilos, imágenes y temas en public/stylesheets'
+  task :install_stylesheets => :environment do
+    cp_r "#{ASSETS_PATH}/stylesheets/jqtouch", "#{RAILS_ROOT}/public/stylesheets"
   end
   
   desc 'Copia el layout application.iphone.erb a app/views/layouts'
@@ -34,13 +30,11 @@ namespace :rails_jqtouch do
   end
 
   desc 'instala las hojas de estilos, javascripts, imágenes y layouts'
-  task :install => [:install_javascripts, :install_layouts, :install_stylesheets_jqt]
+  task :install => [:install_javascripts, :install_layouts, :install_stylesheets]
   
   desc 'Elimina los javascripts instalados'    
   task :clean_javascripts => :environment do
-    Dir.chdir "#{ASSETS_PATH}/jqtouch/javascripts" do
-      Dir.glob('*.js') {|js| rm("#{RAILS_ROOT}/public/javascripts/#{js}")}
-    end
+    rm_r "#{RAILS_ROOT}/public/javascripts/jqtouch"
   end
   
   desc 'Elimina los layouts instalados'
@@ -50,11 +44,10 @@ namespace :rails_jqtouch do
   
   desc 'Elimina las hojas de estilos y las imagenes asociadas'
   task :clean_stylesheets => :environment do
-    rm_r "#{RAILS_ROOT}/public/stylesheets/jqt"
+    rm_r "#{RAILS_ROOT}/public/stylesheets/jqtouch"
   end
   
   desc 'Limpia la instalación de jqtouch, removiendo los javascripts, hojas de estilos, imágenes y layouts'
   task :clean => [:clean_javascripts, :clean_layouts, :clean_stylesheets]
   
 end
-
