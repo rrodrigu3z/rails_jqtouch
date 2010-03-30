@@ -193,6 +193,18 @@ class MobileHelperTest < ActionView::TestCase
     assert_equal(expected, li)
   end
   
+  test "mobile list item with icon" do
+    li = mobile_list_item :name => "Test Item 1", :url => "#test_item_1", :icon => "arrow"
+    expected = '<li class="arrow"><a href="#test_item_1">Test Item 1</a></li>'
+    assert_equal(expected, li)
+  end
+  
+  test "mobile list item with icon and count" do
+    li = mobile_list_item :name => "Test Item 2", :url => "#test_item_2", :icon => "forward", :count => 4
+    expected = '<li class="forward"><a href="#test_item_2">Test Item 2</a><small class="counter">4</small></li>'
+    assert_equal(expected, li)
+  end
+  
   test "mobile list item should raise" do
     assert_raise(RuntimeError) { mobile_list_item({}) }
   end
@@ -203,6 +215,22 @@ class MobileHelperTest < ActionView::TestCase
       {:name => "Test Item 2", :url => "#test_item2", :target => "_self"}]
       
     list = mobile_list(items, :effect => "flip")
+    
+    expected = 
+      '<ul class="rounded">' +
+      '<li><a href="#test_item" class="flip">Test Item</a></li>' +
+      '<li><a href="#test_item2" class="flip" target="_self">Test Item 2</a></li>' +
+      '</ul>'
+      
+    assert_equal(expected, list)
+  end
+  
+  test "mobile list with class" do
+    items = [
+      {:name => "Test Item", :url => "#test_item"},
+      {:name => "Test Item 2", :url => "#test_item2", :target => "_self"}]
+      
+    list = mobile_list(items, :effect => "flip", :class => "edgetoedge")
     
     expected = 
       '<ul class="edgetoedge">' +

@@ -7,7 +7,7 @@ class ConfigurationHelperTest < ActionView::TestCase
     js = <<-EOF
 <script charset="utf-8" type="text/javascript">
 //<![CDATA[
-$(document).jQTouch({"statusBar": "black-translucent"});
+var jQT = new $.jQTouch({"statusBar":"black-translucent"});
 //]]>
 </script>
     EOF
@@ -19,7 +19,7 @@ $(document).jQTouch({"statusBar": "black-translucent"});
     js = <<-EOF
 <script charset="utf-8" type="text/javascript">
 //<![CDATA[
-$(document).jQTouch({});
+var jQT = new $.jQTouch({});
 //]]>
 </script>
     EOF

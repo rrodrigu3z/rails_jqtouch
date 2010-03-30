@@ -3,7 +3,7 @@ module Jqtouch
   # Helpers para generar los diversos elementos que componen las vistas destinadas a las respuestas
   # de los navegadores Mobile Safari, de acuerdo a los estilos y markup especificados en jQTouch.
   #
-  # Dentro del conunto de elementos que se pueden generar se encuentran:
+  # Dentro del conjunto de elementos que se pueden generar se encuentran:
   # * page
   # * pad
   # * panel
@@ -22,7 +22,7 @@ module Jqtouch
   #   <% end %>
   # 
   #   <%= mobile_list [
-  #       {:name => "Features", :url => "#features"},
+  #       {:name => "Features", :url => "#features", :count => 3, :icon => "arrow"},
   #       {:name => "Demos", :url => "#demos"},
   #       {:name => "Docs", :url => "docs.html"},
   #       {:name => "License", :url => "#license"},
@@ -30,17 +30,11 @@ module Jqtouch
   #
   #   <% end %>
   #
-  #   <% mobile_panel 'about' do %>
-  #     <% mobile_pad :style => 'padding-top: 80px' do %>
-  #       <p>jQTouch was created by David Kaneda as a means of easily creating iPhone-styled websites. 
-  #       It is released open source, under the MIT license. It is still in its early stages of development 
-  #       and is currently lacking in documentation. 
-  #       For more information about jQTouch, please contact 
-  #       <a href="http://twitter.com/davidkaneda/">David on Twitter, @davidkaneda.</a></p>
-  #    
-  #       <%= mobile_back_button 'Close', :class => "grayButton"  %>
-  #     <% end %> 
-  #   <% end %>
+  #   <% mobile_info_section do %>
+  #     <p>Add this page to your home screen to view the custom icon, startup screen, and full screen mode.</p>
+  #   <% end -%>
+  #
+  # TODO: Eliminar helpers viejos ya no compatibles con la versión actual.
   module MobileHelper
     
     # Genera el wrapper para una página, referenciada por un id. Ejemplo de uso:
@@ -92,6 +86,25 @@ module Jqtouch
     def mobile_panel(id, options = {}, &proc)
       options[:class] = options.has_key?(:class) ? "panel #{options[:class]}" : "panel"
       mobile_page id, options, &proc
+    end
+    
+    # Genera un +div+ con la clase *info*, que sirve para mostrar trexto informativo.
+    # Se pueden especificar opciones html en +options+. Si se especifica +:class+ dentro
+    # de las opciones, esta es agregada a "info". Ejemplo:
+    #
+    #   mobile_info_section(:class => "pointless_class") do
+    #     content_tag(:p, "Este es un texto de información irrelevante")
+    #   end
+    #
+    # Lo cual genera:
+    #
+    #   <div class="info pointless_class">
+    #     <p>Este es un texto de información irrelevante</p>
+    #   </div>
+    def mobile_info_section(options = {}, &proc)
+      raise "Proc needed" unless block_given?
+      options[:class] = options.has_key?(:class) ? "info #{options[:class]}" : "info"
+      concat content_tag(:div, capture(&proc), options)
     end
     
     # Genera un +fieldset+, que sirve de contenedor de elementos de formulario (en la pråctica 
@@ -224,25 +237,32 @@ module Jqtouch
     end
     
     # Genera un item de una lista (li a). +item+ es un Hash que contiene, al menos los keys +name+ 
-    # y +:url+. Adicionalmente se puede especificar +:target+.
+    # y +:url+. Adicionalmente se puede especificar +:target+, +:effect+, +:count+, +:icon+.
     #
-    #   mobile_list_item :name => "Test Item", :url => "#test_item"
+    #   mobile_list_item :name => "Test Item 1", :url => "#test_item_1"
+    #   mobile_list_item :name => "Test Item 1", :url => "#test_item_1", :icon => "arrow"
+    #   mobile_list_item :name => "Test Item 2", :url => "#test_item_2", :icon => "forward", :count => 4
     #
     # Genera:
     #
     #   <li><a href="#test_item">Test Item</a></li>
+    #   <li class="arrow"><a href="#test_item_1">Test Item 1</a></li>
+    #   <li class="forward"><a href="#test_item_2">Test Item 2</a><small class="counter">4</small></li>
     def mobile_list_item(item, options = {})
       raise "Hash with keys :name and :url needed" unless item.has_key?(:name) && item.has_key?(:url)
       effect = options.delete(:effect) || nil
+      icon_class = item.delete(:icon) || nil
       options[:class] = effect if effect 
       options[:target] = item[:target] if item.has_key?(:target)
-      content_tag :li,
-        link_to(item[:name], item[:url], options)
+      counter = item.has_key?(:count) ? item_count(item.delete(:count)) : ""
+      
+      content_tag(:li, link_to(item[:name], item[:url], options) + counter, :class => icon_class)
     end
     
-    # Genera una lista (ul), con la clase +edgetoedge+, los elementosw de la lista, son especificados
-    # por +items+, los cuales cumnplen con lo especificado para el atributo +item+ de +mobile_list_item+.
-    # +options+ permite especificar opciones a los links generados en +mobile_list_item+.
+    # Genera una lista (ul), con la clase +rounded+ por defecto, los elementos de la lista son especificados
+    # por +items+, los cuales cumplen con lo mismo especificado para el atributo +item+ de +mobile_list_item+.
+    # +options+ permite especificar opciones a los links generados en +mobile_list_item+, excepto por la oipción
+    # :class, la cual permite indicar el tipo de listado ("rounded", "edgetoedge", "metal").
     #
     #
     # Ejemplo:
@@ -255,13 +275,14 @@ module Jqtouch
     #
     # Genera:
     #
-    #   <ul class="edgetoedge">
+    #   <ul class="rounded">
     #     <li><a href="#test_item" class="flip">Test Item</a></li>
     #     <li><a href="#test_item2" class="flip" target="_self">Test Item 2</a></li>
     #   </ul>
     def mobile_list(items, options = {})
+      list_style = options.delete(:class) || "rounded"
       items.map! {|i| mobile_list_item(i, options) }
-      content_tag(:ul, items.join, :class => "edgetoedge")
+      content_tag(:ul, items.join, :class => list_style)
     end
     
     private
@@ -280,6 +301,10 @@ module Jqtouch
       proc = block_given? ? capture(&proc) : ""
       options.merge!(:id => "#{id}")
       content_tag(:div, prebody_html + proc, options)
+    end
+    
+    def item_count(value)
+      content_tag :small, value, :class => "counter"      
     end
     
   end
